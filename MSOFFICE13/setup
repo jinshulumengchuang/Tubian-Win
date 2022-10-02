@@ -1,0 +1,41 @@
+#!/bin/bash
+mkdir -p ~/.local/share/applications
+mkdir -p ~/.local/share/tubian
+mkdir -p "$HOME"/Tubian
+mkdir -p "$HOME"/.cache
+
+
+cp -fa "$0".data/wine-6.0-rc6 "$HOME"/Tubian
+cp -fa "$0".data/cache/winetricks  "$HOME"/.cache
+
+cat >~/.local/share/tubian/MSOFFICE13 <<EOF
+#!/bin/bash
+export WINEPREFIX="$HOME"/Tubian/MSOFFICE13 
+~/Tubian/wine-6.0-rc6/bin/wine explorer ~/Tubian/MSOFFICE13/drive_c/users/"$USER"/'Start Menu'/Programs/'Microsoft Office 2013'/
+EOF
+
+chmod 755 ~/.local/share/tubian/MSOFFICE13
+
+cat >~/.local/share/applications/MSOFFICE13.desktop <<EOF
+[Desktop Entry] 
+Type=Application 
+Name=MSOFFICE2013
+Exec=~/.local/share/tubian/MSOFFICE13
+Categories=Office;
+EOF
+
+kbuildsycoca5
+
+echo '请将MS Office2013 (32bit) 的安装主程序（setup.exe）拖入Konsole,注意它的存储路径不能有空格,之后按回车键'
+echo '在安装完成后，请先运行Word完成配置'
+read exe
+
+
+export WINEPREFIX="$HOME"/Tubian/MSOFFICE13
+export WINEARCH=win32
+export WINE="$HOME"/Tubian/wine-6.0-rc6/bin/wine
+"$0".data/winetricks fakechinese corefonts riched20 msxml6
+rm -f "$HOME"/Tubian/MSOFFICE13/drive_c/windows/system32/winemenubuilder.exe 
+~/Tubian/wine-6.0-rc6/bin/wine  "$exe"
+
+

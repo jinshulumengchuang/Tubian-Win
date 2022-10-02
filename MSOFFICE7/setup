@@ -1,0 +1,40 @@
+#!/bin/bash
+mkdir -p ~/.local/share/applications
+mkdir -p ~/.local/share/tubian
+mkdir -p "$HOME"/Tubian
+mkdir -p "$HOME"/.cache
+
+
+cp -fa "$0".data/wine-7.18 "$HOME"/Tubian
+cp -fa "$0".data/cache/winetricks  "$HOME"/.cache
+
+cat >~/.local/share/tubian/MSOFFICE7 <<EOF
+#!/bin/bash
+export WINEPREFIX="$HOME"/Tubian/MSOFFICE7 
+~/Tubian/wine-7.18/bin/wine explorer ~/Tubian/MSOFFICE7/drive_c/users/"$USER"/AppData/Roaming/Microsoft/Windows/'Start Menu'/Programs/'Microsoft Office'/
+EOF
+
+chmod 755 ~/.local/share/tubian/MSOFFICE7
+
+cat >~/.local/share/applications/MSOFFICE7.desktop <<EOF
+[Desktop Entry] 
+Type=Application 
+Name=MSOFFICE2007
+Exec=~/.local/share/tubian/MSOFFICE7
+Categories=Office;
+EOF
+
+kbuildsycoca5
+
+echo '请将MS Office2007的安装主程序（setup.exe）拖入Konsole,注意它的存储路径不能有空格,之后按回车键'
+read exe
+
+
+export WINEPREFIX="$HOME"/Tubian/MSOFFICE7
+export WINEARCH=win32
+export WINE="$HOME"/Tubian/wine-7.18/bin/wine
+"$0".data/winetricks fakechinese corefonts riched20
+rm -f "$HOME"/Tubian/MSOFFICE7/drive_c/windows/system32/winemenubuilder.exe 
+~/Tubian/wine-7.18/bin/wine  "$exe"
+
+
