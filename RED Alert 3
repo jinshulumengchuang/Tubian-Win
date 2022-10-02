@@ -1,0 +1,44 @@
+#!/bin/bash
+mkdir -p ~/.local/share/applications
+mkdir -p ~/.local/share/tubian
+mkdir -p "$HOME"/Tubian
+mkdir -p "$HOME"/.cache
+
+
+cp -fa "$0".data/Proton5.13 "$HOME"/Tubian
+cp -fa "$0".data/cache/winetricks  "$HOME"/.cache
+
+echo '请将红警3的主程序（RA3.exe）拖入Konsole,注意它的存储路径不能有空格，之后按回车键'
+read exe
+
+cat >~/.local/share/tubian/RA3 <<EOF
+#!/bin/bash
+export PROTONPREFIX="$HOME"/Tubian/RA3/
+~/Tubian/Proton5.13/proton start /unix "$exe" -ui
+EOF
+
+chmod 755 ~/.local/share/tubian/RA3
+
+cat >~/.local/share/applications/RA3.desktop <<EOF
+[Desktop Entry] 
+Type=Application 
+Name=红警3
+Exec=~/.local/share/tubian/RA3
+Categories=Game;
+EOF
+
+kbuildsycoca5
+
+echo '正在修复起动延迟Bug,请输入当前账户的密码'
+sudo su root  -l -c "echo '127.0.0.1 files.ea.com' >>/etc/hosts"
+
+export PROTONPREFIX="$HOME"/Tubian/RA3/
+~/Tubian/Proton5.13/proton "$0".data/fake.exe
+
+export WINEPREFIX="$HOME"/Tubian/RA3/pfx
+export WINE="$HOME"/Tubian/Proton5.13/dist/bin/wine
+
+
+"$0".data/winetricks fakechinese corefonts 
+echo '安装完成！请注意不要开启抗锯齿，会触发Bug'
+echo '起动红警后，点击Language即可切换语言'

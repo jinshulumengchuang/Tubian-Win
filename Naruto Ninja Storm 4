@@ -1,0 +1,38 @@
+#!/bin/bash
+mkdir -p ~/.local/share/applications
+mkdir -p ~/.local/share/tubian
+mkdir -p "$HOME"/Tubian
+mkdir -p "$HOME"/.cache
+
+
+cp -fa "$0".data/Proton7.0 "$HOME"/Tubian
+cp -fa "$0".data/cache/winetricks  "$HOME"/.cache
+
+echo '请将究极风暴4的主程序（NSUNS4.exe）拖入Konsole,注意它的存储路径不能有空格，之后按回车键'
+read exe
+
+cat >~/.local/share/tubian/NSUNS4 <<EOF
+#!/bin/bash
+export PROTONPREFIX="$HOME"/Tubian/NSUNS4/
+~/Tubian/Proton7.0/proton start /unix "$exe" -ui
+EOF
+
+chmod 755 ~/.local/share/tubian/NSUNS4
+
+cat >~/.local/share/applications/NSUNS4.desktop <<EOF
+[Desktop Entry] 
+Type=Application 
+Name=火影忍者究极风暴4
+Exec=~/.local/share/tubian/NSUNS4
+Categories=Game;
+EOF
+
+kbuildsycoca5
+
+export PROTONPREFIX="$HOME"/Tubian/NSUNS4/
+~/Tubian/Proton7.0/proton "$0".data/fake.exe
+
+export WINEPREFIX="$HOME"/Tubian/NSUNS4/pfx
+export WINE="$HOME"/Tubian/Proton7.0/dist/bin/wine
+"$0".data/winetricks fakechinese corefonts 
+echo '安装完成！目前游戏存在Bug,只能使用手柄游戏 分辨率配置在config.ini'

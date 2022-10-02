@@ -1,0 +1,35 @@
+#!/bin/bash
+mkdir -p ~/.local/share/applications
+mkdir -p ~/.local/share/tubian
+mkdir -p "$HOME"/Tubian
+mkdir -p "$HOME"/.cache
+
+
+cp -fa "$0".data/wine-3.7-staging "$HOME"/Tubian
+cp -fa "$0".data/cache/winetricks  "$HOME"/.cache
+
+echo '请将GTAV的GTAVLauncher.exe拖入Konsole,注意它的存储路径不能有空格，之后按回车键'
+read exe
+
+cat >~/.local/share/tubian/GATV <<EOF
+#!/bin/bash
+export WINEPREFIX="$HOME"/Tubian/GATV/
+~/Tubian/wine-3.7-staging/bin/wine start /unix "$exe" 
+EOF
+
+chmod 755 ~/.local/share/tubian/GATV
+
+cat >~/.local/share/applications/GATV.desktop <<EOF
+[Desktop Entry] 
+Type=Application 
+Name=GTA5
+Exec=~/.local/share/tubian/GATV
+Categories=Game;
+EOF
+
+kbuildsycoca5
+
+export WINEPREFIX="$HOME"/Tubian/GATV
+export WINE="$HOME"/Tubian/wine-3.7-staging/bin/wine
+"$0".data/winetricks fakechinese corefonts dxvk0054
+echo '安装完成!'
