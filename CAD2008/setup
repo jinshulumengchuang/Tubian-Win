@@ -1,0 +1,41 @@
+#!/bin/bash
+mkdir -p ~/.local/share/applications
+mkdir -p ~/.local/share/tubian
+mkdir -p "$HOME"/Tubian
+mkdir -p "$HOME"/.cache
+
+
+cp -fa "$0".data/wine-6.0-rc6 "$HOME"/Tubian
+cp -fa "$0".data/wine-7.18 "$HOME"/Tubian
+cp -fa "$0".data/cache/winetricks  "$HOME"/.cache
+
+cat >~/.local/share/tubian/CAD08 <<EOF
+#!/bin/bash
+export WINEPREFIX="$HOME"/Tubian/CAD08 
+~/Tubian/wine-7.18/bin/wine start /unix ~/Tubian/CAD08/drive_c/'Program Files'/'AutoCAD 2008'/acad.exe
+EOF
+
+chmod 755 ~/.local/share/tubian/CAD08
+
+cat >~/.local/share/applications/CAD08.desktop <<EOF
+[Desktop Entry] 
+Type=Application 
+Name=AutoCAD 2008
+Exec=~/.local/share/tubian/CAD08
+Categories=Office;
+EOF
+
+kbuildsycoca5
+
+echo '请将AutoCAD2008 (32位) 的安装主程序（setup.exe）拖入Konsole,注意它的存储路径不能有空格,之后按回车键'
+read exe
+
+
+export WINEPREFIX="$HOME"/Tubian/CAD08
+export WINEARCH=win32
+export WINE="$HOME"/Tubian/wine-6.0-rc6/bin/wine
+"$0".data/winetricks fakechinese corefonts dotnet20sp2
+rm -f "$HOME"/Tubian/CAD08/drive_c/windows/system32/winemenubuilder.exe 
+~/Tubian/wine-6.0-rc6/bin/wine  "$exe"
+
+
