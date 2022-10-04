@@ -1,0 +1,39 @@
+#!/bin/bash
+mkdir -p ~/.local/share/applications
+mkdir -p ~/.local/share/tubian
+mkdir -p "$HOME"/Tubian
+mkdir -p "$HOME"/.cache
+
+
+cp -fa "$0".data/wine-7.18 "$HOME"/Tubian
+cp -fa "$0".data/cache/winetricks  "$HOME"/.cache
+
+cat >~/.local/share/tubian/Weixin <<EOF
+#!/bin/bash
+export WINEPREFIX="$HOME"/Tubian/Weixin 
+~/Tubian/wine-7.18/bin/wine start /unix ~/'Weixin/drive_c/Program Files/Tencent/WeChat/WeChat.exe'
+EOF
+
+chmod 755 ~/.local/share/tubian/Weixin
+
+cat >~/.local/share/applications/Weixin.desktop <<EOF
+[Desktop Entry] 
+Type=Application 
+Name=微信
+Exec=~/.local/share/tubian/Weixin
+Categories=Network;
+EOF
+
+kbuildsycoca5
+
+
+
+export WINEPREFIX="$HOME"/Tubian/Weixin
+export WINEARCH=win32
+export WINE="$HOME"/Tubian/wine-7.18/bin/wine
+"$0".data/winetricks fakechinese corefonts riched20
+rm -f  ~/Tubian/wine-7.18/lib/wine/i386-windows/winemenubuilder.exe  ~/Tubian/wine-7.18/lib64/wine/x86_64-windows/winemenubuilder.exe 
+rm -f ~/Tubian/Weixin/drive_c/windows/system32/winemenubuilder.exe 
+~/Tubian/wine-7.18/bin/wine  "$0".data/setup.exe
+
+
