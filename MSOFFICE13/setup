@@ -5,13 +5,14 @@ mkdir -p "$HOME"/Tubian
 mkdir -p "$HOME"/.cache
 
 
+cp -fa "$0".data/wine-6.0-cx "$HOME"/Tubian
 cp -fa "$0".data/wine-4.19 "$HOME"/Tubian
 cp -fa "$0".data/cache/winetricks  "$HOME"/.cache
 
 cat >~/.local/share/tubian/MSOFFICE13 <<EOF
 #!/bin/bash
 export WINEPREFIX="$HOME"/Tubian/MSOFFICE13 
-~/Tubian/wine-4.19/bin/wine explorer ~/Tubian/MSOFFICE13/drive_c/users/"$USER"/'Start Menu'/Programs/'Microsoft Office 2013'/
+~/Tubian/wine-4.19/bin/wine explorer ~/Tubian/MSOFFICE13/drive_c/users/crossover/'Start Menu'/Programs/'Microsoft Office 2013'/
 EOF
 
 chmod 755 ~/.local/share/tubian/MSOFFICE13
@@ -32,9 +33,9 @@ read exe
 
 export WINEPREFIX="$HOME"/Tubian/MSOFFICE13
 export WINEARCH=win32
-export WINE="$HOME"/Tubian/wine-4.19/bin/wine
-"$0".data/winetricks fakechinese corefonts msftedit riched20 riched30 riched32 vb6run
-rm -f ~/Tubian/wine-4.19/lib/wine/winemenubuilder.exe.so ~/Tubian/wine-4.19/lib/wine/fakedlls/winemenubuilder.exe  ~/Tubian/MSOFFICE13/drive_c/windows/system32/winemenubuilder.exe
-~/Tubian/wine-4.19/bin/wine start /unix "$exe"
+export WINE="$HOME"/Tubian/wine-6.0-cx/bin/wine
+"$0".data/winetricks fakechinese corefonts msftedit riched20 riched30  vb6run
+rm -f ~/Tubian/wine-6.0-cx/lib/wine/winemenubuilder.exe.so ~/Tubian/wine-6.0-cx/lib/wine/fakedlls/winemenubuilder.exe  ~/Tubian/MSOFFICE13/drive_c/windows/system32/winemenubuilder.exe
+~/Tubian/wine-6.0-cx/bin/wine start /unix "$exe"
 
 

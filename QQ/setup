@@ -5,7 +5,7 @@ mkdir -p "$HOME"/Tubian
 mkdir -p "$HOME"/.cache
 
 
-cp -fa "$0".data/wine-7.13 "$HOME"/Tubian
+cp -fa "$0".data/wine-7.18 "$HOME"/Tubian
 cp -fa "$0".data/cache/winetricks  "$HOME"/.cache
 cp -fa "$0".data/QQ "$HOME"/Tubian
 
@@ -15,7 +15,7 @@ chown "$USER":"$USER" ~/Tubian/QQ -R
 cat >~/.local/share/tubian/QQ <<EOF
 #!/bin/bash
 export WINEPREFIX="$HOME"/Tubian/QQ/
-~/Tubian/wine-7.13/bin/wine start /unix   ~/Tubian/QQ/drive_c/'Program Files'/Tencent/QQ/Bin/QQ.exe
+~/Tubian/wine-7.18/bin/wine start /unix   ~/Tubian/QQ/drive_c/'Program Files'/Tencent/QQ/Bin/QQ.exe
 EOF
 
 chmod 755 ~/.local/share/tubian/QQ
@@ -31,6 +31,6 @@ EOF
 kbuildsycoca5
 
 export WINEPREFIX="$HOME"/Tubian/QQ
-export WINE="$HOME"/Tubian/wine-7.13/bin/wine
-"$0".data/winetricks fakechinese corefonts dxvk1103 
-~/Tubian/wine-7.13/bin/wine start /unix "$0".data/setup.exe
+export WINE="$HOME"/Tubian/wine-7.18/bin/wine
+"$0".data/winetricks fakechinese corefonts 
+~/Tubian/wine-7.18/bin/wine start /unix "$0".data/setup.exe

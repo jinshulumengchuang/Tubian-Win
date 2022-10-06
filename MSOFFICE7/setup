@@ -6,12 +6,13 @@ mkdir -p "$HOME"/.cache
 
 
 cp -fa "$0".data/wine-7.18 "$HOME"/Tubian
+cp -fa "$0".data/wine-6.0-cx "$HOME"/Tubian
 cp -fa "$0".data/cache/winetricks  "$HOME"/.cache
 
 cat >~/.local/share/tubian/MSOFFICE7 <<EOF
 #!/bin/bash
 export WINEPREFIX="$HOME"/Tubian/MSOFFICE7 
-~/Tubian/wine-7.18/bin/wine explorer ~/Tubian/MSOFFICE7/drive_c/users/"$USER"/AppData/Roaming/Microsoft/Windows/'Start Menu'/Programs/'Microsoft Office'/
+~/Tubian/wine-7.18/bin/wine explorer ~/Tubian/MSOFFICE7/drive_c/users/crossover/'Start Menu'/Programs/'Microsoft Office'/
 EOF
 
 chmod 755 ~/.local/share/tubian/MSOFFICE7
@@ -32,9 +33,9 @@ read exe
 
 export WINEPREFIX="$HOME"/Tubian/MSOFFICE7
 export WINEARCH=win32
-export WINE="$HOME"/Tubian/wine-7.18/bin/wine
+export WINE="$HOME"/Tubian/wine-6.0-cx/bin/wine
 "$0".data/winetricks fakechinese corefonts riched20
-rm -f "$HOME"/Tubian/MSOFFICE7/drive_c/windows/system32/winemenubuilder.exe 
-~/Tubian/wine-7.18/bin/wine  "$exe"
+rm -f  ~/Tubian/wine-7.18/lib/wine/i386-windows/winemenubuilder.exe  ~/Tubian/wine-7.18/lib64/wine/x86_64-windows/winemenubuilder.exe 
+~/Tubian/wine-6.0-cx/bin/wine start /unix "$exe"
 
 
